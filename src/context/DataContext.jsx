@@ -1,44 +1,82 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const [employees, setEmployees] = useState([
-    { id: 1, name: 'Alice Walker', role: 'Event Manager', phone: '555-0101', email: 'alice@crmpro.com' },
-    { id: 2, name: 'Bob Harris', role: 'Staff Trainer', phone: '555-0102', email: 'bob@crmpro.com' }
-  ]);
+  const [employees, setEmployees] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [clients, setClients] = useState([
-    { id: 1, name: 'Sarah Jenkins', type: 'Individual', phone: '555-0201', email: 'sarah.j@example.com', totalSales: 450 },
-    { id: 2, name: 'Acme Corp', type: 'Corporate', phone: '555-0202', email: 'contact@acme.com', totalSales: 1200 }
-  ]);
+  // Fetch all initial data
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [empRes, cliRes, venRes, evtRes] = await Promise.all([
+        supabase.from('employees').select('*'),
+        supabase.from('clients').select('*'),
+        supabase.from('vendors').select('*'),
+        supabase.from('events').select('*')
+      ]);
 
-  const [vendors, setVendors] = useState([
-    { id: 1, name: 'Party Supplies Co', category: 'Decorations', phone: '555-0301', email: 'sales@partysupplies.com' },
-    { id: 2, name: 'Fresh Catering', category: 'Food & Beverage', phone: '555-0302', email: 'orders@freshcatering.com' }
-  ]);
+      if (!empRes.error) setEmployees(empRes.data);
+      if (!cliRes.error) setClients(cliRes.data);
+      if (!venRes.error) setVendors(venRes.data);
+      if (!evtRes.error) setEvents(evtRes.data);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const [events, setEvents] = useState([
-    { id: 1, title: 'Sarah Birthday Party', date: new Date().toISOString(), type: 'Party', client_id: 1 },
-    { id: 2, title: 'Staff Meeting', date: new Date(Date.now() + 86400000).toISOString(), type: 'Schedule' }
-  ]);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // Generators for adding new records
-  const addEmployee = (emp) => setEmployees([...employees, { id: Date.now(), ...emp }]);
-  const addClient = (client) => setClients([...clients, { id: Date.now(), ...client, totalSales: 0 }]);
-  const addVendor = (vendor) => setVendors([...vendors, { id: Date.now(), ...vendor }]);
-  const addEvent = (evt) => setEvents([...events, { id: Date.now(), ...evt }]);
+  // Generic helper for adding records
+  const addRecord = async (table, record, setter, currentList) => {
+    const { data, error } = await supabase.from(table).insert([record]).select();
+    if (error) {
+      console.error(`Error adding to ${table}:`, error);
+      return;
+    }
+    if (data) setter([...currentList, data[0]]);
+  };
 
-  // Removers
-  const deleteEmployee = (id) => setEmployees(employees.filter(e => e.id !== id));
-  const deleteClient = (id) => setClients(clients.filter(c => c.id !== id));
-  const deleteVendor = (id) => setVendors(vendors.filter(v => v.id !== id));
-  const deleteEvent = (id) => setEvents(events.filter(e => e.id !== id));
+  // Generic helper for deleting records
+  const deleteRecord = async (table, id, setter, currentList) => {
+    const { error } = await supabase.from(table).delete().eq('id', id);
+    if (error) {
+      console.error(`Error deleting from ${table}:`, error);
+      return;
+    }
+    setter(currentList.filter(item => item.id !== id));
+  };
+
+  const addEmployee = (emp) => addRecord('employees', emp, setEmployees, employees);
+  const deleteEmployee = (id) => deleteRecord('employees', id, setEmployees, employees);
+
+  const addClient = (client) => addRecord('clients', { ...client, total_sales: 0 }, setClients, clients);
+  const deleteClient = (id) => deleteRecord('clients', id, setClients, clients);
+
+  const addVendor = (vendor) => addRecord('vendors', vendor, setVendors, vendors);
+  const deleteVendor = (id) => deleteRecord('vendors', id, setVendors, vendors);
+
+  const addEvent = async (evt) => {
+    // Need to attach the current authenticated user ID for RLS if needed
+    const { data: { user } } = await supabase.auth.getUser();
+    addRecord('events', { ...evt, user_auth_id: user?.id }, setEvents, events);
+  };
+  const deleteEvent = (id) => deleteRecord('events', id, setEvents, events);
 
   return (
     <DataContext.Provider value={{
+      loading,
       employees, addEmployee, deleteEmployee,
       clients, addClient, deleteClient,
       vendors, addVendor, deleteVendor,

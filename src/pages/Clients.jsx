@@ -90,7 +90,7 @@ export default function Clients() {
                     <span className="text-muted text-sm">{client.phone}</span>
                   </div>
                 </td>
-                <td className="font-medium text-success">${client.totalSales}</td>
+                <td className="font-medium text-success">${client.total_sales || 0}</td>
                 <td className="action-col" style={{display: 'flex', gap: '4px', justifyContent: 'flex-end'}}>
                   <button className="icon-btn" title="Log Sale (POS Stub)"><CreditCard size={18} /></button>
                   <button className="icon-btn danger" onClick={() => deleteClient(client.id)}>
