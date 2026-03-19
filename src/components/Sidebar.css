@@ -1,15 +1,26 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  position: fixed;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  left: 0;
+  /* Leaves 1.5rem gap at top & bottom to mirror the main content padding perfectly */
+  height: calc(100vh - 3rem);
   width: 260px;
   padding: 1.5rem;
-  position: fixed;
-  left: 0;
-  top: 0;
-  border-right: 1px solid var(--border-color);
-  border-radius: 0;
   z-index: 10;
+  
+  /* Mirror the detail panel glass drawer appearance */
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Right edge has border/shadow, left edge is flat/square against the screen edge */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: none;
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.08); /* shadow extends rightward instead of leftward */
+  border-radius: 0 var(--radius-md) var(--radius-md) 0; /* rounded on right side only */
 }
 
 .sidebar-header {

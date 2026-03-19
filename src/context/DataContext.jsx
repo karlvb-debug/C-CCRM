@@ -39,47 +39,69 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   // Generic helper for adding records
-  const addRecord = async (table, record, setter, currentList) => {
+  const addRecord = async (table, record, setter) => {
     const { data, error } = await supabase.from(table).insert([record]).select();
     if (error) {
       console.error(`Error adding to ${table}:`, error);
-      return;
+      return null;
     }
-    if (data) setter([...currentList, data[0]]);
+    if (data && data.length > 0) {
+      setter(prev => [...prev, data[0]]);
+      return data[0];
+    }
+    return null;
   };
 
   // Generic helper for deleting records
-  const deleteRecord = async (table, id, setter, currentList) => {
+  const deleteRecord = async (table, id, setter) => {
     const { error } = await supabase.from(table).delete().eq('id', id);
     if (error) {
       console.error(`Error deleting from ${table}:`, error);
-      return;
+      return false;
     }
-    setter(currentList.filter(item => item.id !== id));
+    setter(prev => prev.filter(item => item.id !== id));
+    return true;
   };
 
-  const addEmployee = (emp) => addRecord('employees', emp, setEmployees, employees);
-  const deleteEmployee = (id) => deleteRecord('employees', id, setEmployees, employees);
+  // Generic helper for updating records
+  const updateRecord = async (table, id, updates, setter) => {
+    const { data, error } = await supabase.from(table).update(updates).eq('id', id).select();
+    if (error) {
+      console.error(`Error updating ${table}:`, error);
+      return null;
+    }
+    if (data && data.length > 0) {
+      setter(prev => prev.map(item => item.id === id ? data[0] : item));
+      return data[0];
+    }
+    return null;
+  };
 
-  const addClient = (client) => addRecord('clients', { ...client, total_sales: 0 }, setClients, clients);
-  const deleteClient = (id) => deleteRecord('clients', id, setClients, clients);
+  const addEmployee = async (emp) => await addRecord('employees', emp, setEmployees);
+  const deleteEmployee = async (id) => await deleteRecord('employees', id, setEmployees);
+  const updateEmployee = async (id, updates) => await updateRecord('employees', id, updates, setEmployees);
 
-  const addVendor = (vendor) => addRecord('vendors', vendor, setVendors, vendors);
-  const deleteVendor = (id) => deleteRecord('vendors', id, setVendors, vendors);
+  const addClient = async (client) => await addRecord('clients', { ...client, total_sales: 0 }, setClients);
+  const deleteClient = async (id) => await deleteRecord('clients', id, setClients);
+  const updateClient = async (id, updates) => await updateRecord('clients', id, updates, setClients);
+
+  const addVendor = async (vendor) => await addRecord('vendors', vendor, setVendors);
+  const deleteVendor = async (id) => await deleteRecord('vendors', id, setVendors);
+  const updateVendor = async (id, updates) => await updateRecord('vendors', id, updates, setVendors);
 
   const addEvent = async (evt) => {
     // Need to attach the current authenticated user ID for RLS if needed
     const { data: { user } } = await supabase.auth.getUser();
-    addRecord('events', { ...evt, user_auth_id: user?.id }, setEvents, events);
+    return await addRecord('events', { ...evt, user_auth_id: user?.id }, setEvents);
   };
-  const deleteEvent = (id) => deleteRecord('events', id, setEvents, events);
+  const deleteEvent = async (id) => await deleteRecord('events', id, setEvents);
 
   return (
     <DataContext.Provider value={{
       loading,
-      employees, addEmployee, deleteEmployee,
-      clients, addClient, deleteClient,
-      vendors, addVendor, deleteVendor,
+      employees, addEmployee, deleteEmployee, updateEmployee,
+      clients, addClient, deleteClient, updateClient,
+      vendors, addVendor, deleteVendor, updateVendor,
       events, addEvent, deleteEvent
     }}>
       {children}

@@ -1,28 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Premium Dark/Modern Palette */
-  --bg-primary: #f0f2f5;
-  --bg-secondary: #ffffff;
+  /* Craft & Cream Palette */
+  --bg-primary: #FAF7F2;     /* Warm Cream */
+  --bg-secondary: #FFFFFF;
   --bg-glass: rgba(255, 255, 255, 0.75);
-  --border-color: #e2e8f0;
+  --border-color: #E2DCD3;   /* Warmer border */
   
-  --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text-main: #322019;      /* Deep Espresso */
+  --text-muted: #8A7B76;     /* Muted Coffee */
   
-  --accent-primary: #4f46e5;
-  --accent-secondary: #818cf8;
-  --accent-hover: #4338ca;
-  --accent-glow: rgba(79, 70, 229, 0.4);
+  /* Primary Action: Teal */
+  --accent-primary: #38D3B2;
+  --accent-secondary: #EAB308; /* Yellow */
+  --accent-hover: #2EBA9B;
+  --accent-glow: rgba(56, 211, 178, 0.4);
   
   --danger: #ef4444;
   --success: #10b981;
   --warning: #f59e0b;
   
+  --pastel-blue: rgba(59, 130, 246, 0.08);
+  --pastel-pink: rgba(236, 72, 153, 0.08);
+  --pastel-purple: rgba(168, 85, 247, 0.08);
+  --pastel-gray: rgba(156, 163, 175, 0.08);
+  
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 8px; /* Slightly rounder to match the playful brand */
+  --radius-md: 16px;
+  --radius-lg: 24px;
   
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -43,6 +49,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 a {
@@ -92,8 +99,8 @@ h1 {
 .page-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1rem 0;
+  gap: 1rem;
+  padding: 0;
   height: 100%;
 }
 
@@ -115,10 +122,10 @@ h1 {
 /* Buttons */
 .btn-primary {
   background: var(--accent-primary);
-  color: white;
+  color: var(--text-main); /* Espresso text on Teal for better contrast/vibe */
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-sm);
-  font-weight: 500;
+  font-weight: 600;
   transition: var(--transition);
   box-shadow: 0 4px 6px var(--accent-glow);
 }

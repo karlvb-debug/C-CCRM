@@ -6,10 +6,10 @@ import Auth from './components/Auth';
 
 // View placeholders
 import Dashboard from './pages/Dashboard';
-import Employees from './pages/Employees';
 import Clients from './pages/Clients';
-import Vendors from './pages/Vendors';
 import CalendarView from './pages/CalendarView';
+// import Employees from './pages/Employees'; // temporarily hidden
+// import Vendors from './pages/Vendors';     // temporarily hidden
 
 function App() {
   const [session, setSession] = useState(null);
@@ -32,10 +32,10 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/employees" element={<Employees />} />
         <Route path="/clients" element={<Clients />} />
-        <Route path="/vendors" element={<Vendors />} />
         <Route path="/calendar" element={<CalendarView />} />
+        {/* <Route path="/employees" element={<Employees />} /> */}
+        {/* <Route path="/vendors" element={<Vendors />} /> */}
       </Route>
     </Routes>
   );

@@ -2,9 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Users, 
   Briefcase, 
-  Truck, 
   Calendar, 
   Settings 
 } from 'lucide-react';
@@ -12,9 +10,7 @@ import './Sidebar.css';
 
 const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/employees', icon: Users, label: 'Employees' },
   { path: '/clients', icon: Briefcase, label: 'Clients' },
-  { path: '/vendors', icon: Truck, label: 'Vendors' },
   { path: '/calendar', icon: Calendar, label: 'Calendar' }
 ];
 

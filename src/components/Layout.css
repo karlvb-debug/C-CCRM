@@ -6,15 +6,14 @@
 .main-content {
   flex: 1;
   margin-left: 260px; /* Width of sidebar */
-  padding: 2rem;
+  padding: 1.5rem; /* Reduced top/bottom/side padding */
   display: flex;
   flex-direction: column;
 }
 
 .main-content-inner {
-  max-width: 1400px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
