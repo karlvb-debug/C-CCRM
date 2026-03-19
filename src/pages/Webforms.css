@@ -1,0 +1,283 @@
+/* Webforms Module Styles */
+
+/* ── Status Badges ─────────────────────── */
+.wf-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.wf-status-badge.active {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+}
+.wf-status-badge.inactive {
+  background: rgba(156, 163, 175, 0.12);
+  color: var(--text-muted);
+}
+
+/* ── Detail Panel ──────────────────────── */
+.wf-detail-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+.wf-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+.wf-detail-header h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+.wf-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.wf-detail-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ── Field Group ───────────────────────── */
+.wf-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.wf-field-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.wf-field-group input,
+.wf-field-group textarea {
+  padding: 0.6rem 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: var(--bg-secondary);
+  width: 100%;
+  color: var(--text-main);
+}
+.wf-field-group input:focus,
+.wf-field-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.wf-slug-prefix {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Section Title ─────────────────────── */
+.wf-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ── Fields Builder List ───────────────── */
+.wf-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.wf-field-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+.wf-field-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0,0,0,0.02);
+  border-bottom: 1px solid var(--border-color);
+}
+.wf-field-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.wf-type-select {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  flex: 1;
+  color: var(--text-main);
+  font-family: inherit;
+}
+.wf-required-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.wf-field-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+.wf-field-inputs input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: var(--bg-secondary);
+  width: 100%;
+  color: var(--text-main);
+}
+.wf-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.wf-option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.wf-option-row input { flex: 1; }
+
+.wf-add-field-btn {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+/* ── Submissions ───────────────────────── */
+.wf-submission-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.wf-submission-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.875rem;
+  background: rgba(0,0,0,0.02);
+  border-bottom: 1px solid var(--border-color);
+}
+.wf-matched-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 99px;
+}
+.wf-match-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: rgba(56, 211, 178, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  cursor: pointer;
+  border: 1px solid var(--accent-primary);
+  transition: var(--transition);
+}
+.wf-match-btn:hover { background: rgba(56, 211, 178, 0.2); }
+.wf-submission-data {
+  padding: 0.75rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.wf-data-row {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+.wf-data-key {
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.wf-data-val {
+  color: var(--text-main);
+}
+
+/* ── Error & Empty ─────────────────────── */
+.wf-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--danger);
+  font-size: 0.85rem;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 0.6rem 0.875rem;
+  border-radius: var(--radius-sm);
+}
+.wf-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* btn-secondary for use in this module */
+.btn-secondary {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-secondary:hover { background: var(--bg-primary); }
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-danger-outline:hover { background: rgba(239,68,68,0.08); }

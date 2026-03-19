@@ -4,14 +4,17 @@ import {
   LayoutDashboard, 
   Briefcase, 
   Calendar, 
+  FileText,
   Settings 
 } from 'lucide-react';
+
 import './Sidebar.css';
 
 const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/clients', icon: Briefcase, label: 'Clients' },
-  { path: '/calendar', icon: Calendar, label: 'Calendar' }
+  { path: '/calendar', icon: Calendar, label: 'Calendar' },
+  { path: '/webforms', icon: FileText, label: 'Webforms' },
 ];
 
 export default function Sidebar() {

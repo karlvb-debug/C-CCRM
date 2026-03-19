@@ -1,0 +1,314 @@
+/* Public Branded Form — Craft & Cream Style */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Brand tokens ─────────────────────── */
+:root {
+  --pf-cream: #FAFAF9;
+  --pf-espresso: #3E2723;
+  --pf-teal: #2DD4BF;
+  --pf-mustard: #EAB308;
+  --pf-slate: #334155;
+  --pf-border: rgba(51, 65, 85, 0.2);
+  --pf-focus-ring: rgba(45, 212, 191, 0.3);
+}
+
+/* ── Page wrapper ──────────────────────── */
+.pf-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--pf-cream);
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1rem 5rem;
+  position: relative;
+  overflow: hidden;
+  color: var(--pf-espresso);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrolling background text ─────────── */
+.pf-bg-scroll {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  transform: rotate(-6deg) scale(1.25);
+}
+.pf-bg-row {
+  white-space: nowrap;
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation-duration: 40s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.pf-bg-row.left { animation-name: pf-scroll-left; }
+.pf-bg-row.right { animation-name: pf-scroll-right; }
+
+@keyframes pf-scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes pf-scroll-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ── Card ──────────────────────────────── */
+.pf-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2.5rem 2.5rem;
+  box-shadow: 0 20px 60px rgba(62, 39, 35, 0.12);
+  border: 1px solid rgba(62, 39, 35, 0.05);
+  width: 100%;
+  max-width: 520px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Logo ──────────────────────────────── */
+.pf-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.pf-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* ── Header ────────────────────────────── */
+.pf-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.pf-header h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--pf-espresso);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.pf-subtitle {
+  color: var(--pf-slate);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* ── Form ──────────────────────────────── */
+.pf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Field group ───────────────────────── */
+.pf-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pf-field-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pf-espresso);
+}
+.pf-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+.pf-field-group input[type="text"],
+.pf-field-group input[type="email"],
+.pf-field-group input[type="tel"],
+.pf-field-group textarea,
+.pf-field-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--pf-border);
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--pf-espresso);
+  background: rgba(250, 250, 249, 0.5);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.pf-field-group input:focus,
+.pf-field-group textarea:focus,
+.pf-field-group select:focus {
+  border-color: var(--pf-teal);
+  box-shadow: 0 0 0 3px var(--pf-focus-ring);
+}
+.pf-field-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ── Radio group ───────────────────────── */
+.pf-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pf-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--pf-border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--pf-slate);
+  transition: background 0.15s, border-color 0.15s;
+  background: rgba(250, 250, 249, 0.5);
+}
+.pf-radio-label:hover { background: rgba(45, 212, 191, 0.05); }
+.pf-radio-label.selected {
+  border-color: var(--pf-teal);
+  background: rgba(45, 212, 191, 0.08);
+  color: var(--pf-espresso);
+  font-weight: 500;
+}
+.pf-radio-label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--pf-teal);
+  flex-shrink: 0;
+}
+
+/* ── Checkbox ──────────────────────────── */
+.pf-checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+.pf-checkbox-group input[type="checkbox"] {
+  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--pf-teal);
+  flex-shrink: 0;
+}
+.pf-checkbox-group label {
+  font-size: 0.85rem;
+  color: var(--pf-slate);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+/* ── Submit button ─────────────────────── */
+.pf-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--pf-espresso);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 14px rgba(62, 39, 35, 0.25);
+}
+.pf-submit-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+.pf-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Submit error ──────────────────────── */
+.pf-submit-error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+/* ── Success state ─────────────────────── */
+.pf-success-card {
+  text-align: center;
+}
+.pf-success-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(45, 212, 191, 0.15);
+  color: var(--pf-teal);
+  font-size: 2rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.pf-success-card h2 {
+  font-size: 1.75rem;
+  color: var(--pf-espresso);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Error heading ─────────────────────── */
+.pf-error-heading {
+  font-size: 1.5rem;
+  color: var(--pf-espresso);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* ── Footer ────────────────────────────── */
+.pf-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--pf-slate);
+  opacity: 0.7;
+}
+
+/* ── Loader ────────────────────────────── */
+.pf-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+.pf-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(45, 212, 191, 0.2);
+  border-top-color: var(--pf-teal);
+  border-radius: 50%;
+  animation: pf-spin 0.7s linear infinite;
+}
+@keyframes pf-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ────────────────────────── */
+@media (max-width: 600px) {
+  .pf-page { padding: 1.5rem 1rem 4rem; }
+  .pf-card { padding: 1.75rem 1.25rem; border-radius: 20px; }
+  .pf-header h2 { font-size: 1.5rem; }
+}
