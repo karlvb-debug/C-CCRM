@@ -233,6 +233,22 @@
   font-weight: 600;
 }
 
+/* Headers */
+.pf-static-text h1, .pf-static-text h2, .pf-static-text h3, .pf-static-text h4, .pf-static-text h5, .pf-static-text h6 {
+  color: var(--pf-espresso);
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.pf-static-text *:first-child { margin-top: 0; }
+.pf-static-text h1 { font-size: 1.5rem; }
+.pf-static-text h2 { font-size: 1.35rem; }
+.pf-static-text h3 { font-size: 1.15rem; }
+.pf-static-text h4 { font-size: 1rem; }
+.pf-static-text h5 { font-size: 0.9rem; }
+.pf-static-text h6 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pf-slate); }
+
 /* ── Links ─────────────────────────────── */
 .pf-link {
   color: var(--pf-teal);
