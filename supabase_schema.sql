@@ -71,6 +71,10 @@ CREATE TABLE public.webforms (
     title text not null,
     slug text not null unique,
     description text,
+    success_message text,
+    redirect_url text,
+    webhook_url text,
+    is_kiosk_mode boolean default false,
     fields jsonb not null default '[]'::jsonb,
     is_active boolean default true
 );

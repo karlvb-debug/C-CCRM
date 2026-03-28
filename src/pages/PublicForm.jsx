@@ -232,14 +232,28 @@ export default function PublicForm() {
   if (submitted) {
     return (
       <div className="pf-page">
-        <div className="pf-card pf-success-card">
-          <div className="pf-success-icon">✓</div>
-          <h2>{formDef.success_message || "You're In!"}</h2>
-          <p className="pf-subtitle">
+        <div className="pf-card pf-success-card" style={{ textAlign: 'center' }}>
+          <div className="pf-success-icon" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '50%', background: 'var(--pf-teal)', color: 'white', fontSize: '2rem', marginBottom: '1.5rem' }}>✓</div>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', color: 'var(--pf-espresso)' }}>{formDef.success_message || "You're In!"}</h2>
+          <p className="pf-subtitle" style={{ fontSize: '1.1rem', color: 'var(--pf-slate)', lineHeight: 1.5 }}>
             {formDef.redirect_url 
               ? 'Redirecting you shortly...' 
               : 'Thank you for your submission. We\'ll be in touch soon.'}
           </p>
+          
+          {formDef.is_kiosk_mode && !formDef.redirect_url && (
+            <button 
+              className="pf-submit-btn" 
+              style={{ marginTop: '2rem' }}
+              onClick={() => {
+                setSubmitted(false);
+                setValues({});
+                setSubmitError('');
+              }}
+            >
+              Submit Another Response
+            </button>
+          )}
         </div>
       </div>
     );

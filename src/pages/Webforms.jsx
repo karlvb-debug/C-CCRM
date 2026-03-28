@@ -43,6 +43,7 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
     success_message: '',
     redirect_url: '',
     webhook_url: '',
+    is_kiosk_mode: false,
     fields: [],
     is_active: true,
     ...(initialForm || {}),
@@ -122,6 +123,7 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
         success_message: form.success_message?.trim() || null,
         redirect_url: form.redirect_url?.trim() || null,
         webhook_url: form.webhook_url?.trim() || null,
+        is_kiosk_mode: !!form.is_kiosk_mode,
         fields: form.fields,
         is_active: form.is_active,
       };
@@ -182,6 +184,18 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
           <div className="wf-field-group">
             <label>Webhook URL <span className="text-muted" style={{fontWeight:400}}>(Zapier/Make alert ping, optional)</span></label>
             <input type="url" value={form.webhook_url || ''} onChange={e => setF('webhook_url', e.target.value)} placeholder="https://hooks.zapier.com/..." />
+          </div>
+          <div className="wf-field-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+            <input 
+              type="checkbox" 
+              id="kioskModeMatch"
+              checked={form.is_kiosk_mode || false} 
+              onChange={e => setF('is_kiosk_mode', e.target.checked)} 
+              style={{ width: 'auto' }}
+            />
+            <label htmlFor="kioskModeMatch" style={{ color: 'var(--text-main)', textTransform: 'none', cursor: 'pointer', fontSize: '0.85rem'}}>
+              <strong>Kiosk Mode</strong> <span className="text-muted" style={{fontWeight:400}}>– Keep the form open to accept multiple back-to-back entries without manual refresh (e.g. at a live event table).</span>
+            </label>
           </div>
         </div>
 
