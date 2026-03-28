@@ -210,6 +210,43 @@
   line-height: 1.5;
   cursor: pointer;
 }
+.pf-checkbox-group label strong {
+  color: var(--pf-espresso);
+  font-weight: 600;
+}
+
+/* ── Static Text Block ─────────────────── */
+.pf-static-text {
+  font-size: 0.85rem;
+  color: var(--pf-slate);
+  line-height: 1.6;
+}
+.pf-static-text p {
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+.pf-static-text p:last-child {
+  margin-bottom: 0;
+}
+.pf-static-text strong {
+  color: var(--pf-espresso);
+  font-weight: 600;
+}
+
+/* ── Links ─────────────────────────────── */
+.pf-link {
+  color: var(--pf-teal);
+  text-decoration: underline;
+  text-decoration-color: rgba(45, 212, 191, 0.4);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.pf-link:hover {
+  color: var(--pf-espresso);
+  text-decoration-color: var(--pf-teal);
+}
 
 /* ── Submit button ─────────────────────── */
 .pf-submit-btn {

@@ -16,6 +16,7 @@ const FIELD_TYPES = [
   { value: 'radio', label: 'Multiple Choice' },
   { value: 'checkbox', label: 'Checkbox (Agreement)' },
   { value: 'select', label: 'Dropdown' },
+  { value: 'content', label: 'Static Text Block' },
 ];
 
 function newField() {
@@ -154,19 +155,23 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
                 >
                   {FIELD_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
-                <label className="wf-required-toggle">
-                  <input type="checkbox" checked={field.required} onChange={e => updateField(field.id, 'required', e.target.checked)} />
-                  Required
-                </label>
+                {field.type !== 'content' && (
+                  <label className="wf-required-toggle">
+                    <input type="checkbox" checked={field.required} onChange={e => updateField(field.id, 'required', e.target.checked)} />
+                    Required
+                  </label>
+                )}
                 <button className="icon-btn danger" onClick={() => removeField(field.id)}><Trash2 size={14}/></button>
               </div>
               <div className="wf-field-inputs">
-                <input
-                  type="text"
-                  value={field.label}
-                  onChange={e => updateField(field.id, 'label', e.target.value)}
-                  placeholder="Label"
-                />
+                {field.type !== 'content' && (
+                  <input
+                    type="text"
+                    value={field.label}
+                    onChange={e => updateField(field.id, 'label', e.target.value)}
+                    placeholder="Label"
+                  />
+                )}
                 {['text','email','tel','textarea'].includes(field.type) && (
                   <input
                     type="text"
@@ -178,9 +183,17 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
                 {field.type === 'checkbox' && (
                   <input
                     type="text"
-                    value={field.placeholder}
+                    value={field.placeholder || ''}
                     onChange={e => updateField(field.id, 'placeholder', e.target.value)}
-                    placeholder="Checkbox label text..."
+                    placeholder="Checkbox label (Markdown: **bold**, [Link](https://...))"
+                  />
+                )}
+                {field.type === 'content' && (
+                  <textarea
+                    value={field.placeholder || ''}
+                    onChange={e => updateField(field.id, 'placeholder', e.target.value)}
+                    placeholder="Enter static text. Use Markdown: **bold**, *italic*, [Link Text](https://example.com)..."
+                    rows={4}
                   />
                 )}
                 {['radio','select'].includes(field.type) && (

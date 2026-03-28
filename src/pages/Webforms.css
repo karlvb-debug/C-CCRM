@@ -24,6 +24,9 @@
   height: 100%;
   overflow: hidden;
   border-radius: var(--radius-md);
+  position: relative;
+  z-index: 1000;
+  flex: 1;
 }
 .wf-detail-header {
   display: flex;

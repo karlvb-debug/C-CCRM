@@ -3,10 +3,32 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import './PublicForm.css';
 
+const renderRichText = (text) => {
+  if (!text) return null;
+  // Basic markdown parsing: escape HTML, then parse links, bold, italic, and newlines
+  let html = text
+    .replace(/</g, "&lt;").replace(/>/g, "&gt;") // sanitize HTML tags
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="pf-link">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br />');
+
+  // Wrap in a span so it can live inside labels or blocks seamlessly
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
 function DynamicField({ field, value, onChange }) {
   const id = field.id;
 
   switch (field.type) {
+    case 'content':
+      return (
+        <div className="pf-static-text">
+          {renderRichText(field.placeholder)}
+        </div>
+      );
+
     case 'textarea':
       return (
         <div className="pf-field-group">
@@ -73,7 +95,7 @@ function DynamicField({ field, value, onChange }) {
             onChange={e => onChange(field.label, e.target.checked)}
           />
           <label htmlFor={id}>
-            {field.placeholder || field.label}
+            {renderRichText(field.placeholder || field.label)}
             {field.required && <span className="pf-required">*</span>}
           </label>
         </div>
