@@ -164,16 +164,36 @@ export default function PublicForm() {
       if (values[label] !== undefined) normalizedData[key] = values[label];
     });
 
-    const { error } = await supabase
-      .from('form_submissions')
-      .insert([{ form_id: formDef.id, data: normalizedData }]);
+    try {
+      // 1. Send to Supabase
+      const { error } = await supabase
+        .from('form_submissions')
+        .insert([{ form_id: formDef.id, data: normalizedData }]);
+      if (error) throw error;
 
-    if (error) {
-      setSubmitError('Something went wrong. Please try again.');
-    } else {
+      // 2. Ping Webhook if configured
+      if (formDef.webhook_url) {
+        // Fire and forget, we don't want a webhook failure to break the submission
+        fetch(formDef.webhook_url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ form: formDef.title, data: normalizedData })
+        }).catch(e => console.error('Webhook ping failed', e));
+      }
+
       setSubmitted(true);
+
+      // 3. Handle Redirect
+      if (formDef.redirect_url) {
+        setTimeout(() => {
+          window.location.href = formDef.redirect_url;
+        }, 3000);
+      }
+    } catch (err) {
+      setSubmitError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   // ── Loading / Error ──
@@ -207,8 +227,12 @@ export default function PublicForm() {
       <div className="pf-page">
         <div className="pf-card pf-success-card">
           <div className="pf-success-icon">✓</div>
-          <h2>You're In!</h2>
-          <p className="pf-subtitle">Thank you for your submission. We'll be in touch soon.</p>
+          <h2>{formDef.success_message || "You're In!"}</h2>
+          <p className="pf-subtitle">
+            {formDef.redirect_url 
+              ? 'Redirecting you shortly...' 
+              : 'Thank you for your submission. We\'ll be in touch soon.'}
+          </p>
         </div>
       </div>
     );

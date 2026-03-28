@@ -10,9 +10,15 @@ import { supabase } from './supabase';
  * @returns {object|null} - The matched or newly-created client
  */
 export async function matchOrCreateClient(submissionId, data) {
-  const email = data.email || data.Email || '';
-  const phone = data.phone || data.Phone || data['Phone Number'] || '';
-  const name = data.name || data.Name || data['Full Name'] || 'Unknown';
+  const getVal = (data, keywords) => {
+    const keys = Object.keys(data);
+    const match = keys.find(k => keywords.some(kw => k.toLowerCase().includes(kw)));
+    return match ? data[match] : '';
+  };
+
+  const email = getVal(data, ['email']);
+  const phone = getVal(data, ['phone', 'cell', 'mobile']);
+  const name = getVal(data, ['name', 'full name']);
 
   if (!email && !phone) return null;
 
@@ -25,7 +31,7 @@ export async function matchOrCreateClient(submissionId, data) {
       .select('*')
       .ilike('email', email)
       .limit(1)
-      .single();
+      .maybeSingle();
     if (byEmail) existingClient = byEmail;
   }
 

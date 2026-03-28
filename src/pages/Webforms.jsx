@@ -16,6 +16,8 @@ const FIELD_TYPES = [
   { value: 'radio', label: 'Multiple Choice' },
   { value: 'checkbox', label: 'Checkbox (Agreement)' },
   { value: 'select', label: 'Dropdown' },
+  { value: 'date', label: 'Date Picker' },
+  { value: 'time', label: 'Time Picker' },
   { value: 'content', label: 'Static Text Block' },
 ];
 
@@ -37,12 +39,16 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
     title: '',
     slug: '',
     description: '',
+    success_message: '',
+    redirect_url: '',
+    webhook_url: '',
     fields: [],
     is_active: true,
     ...(initialForm || {}),
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [draggedIdx, setDraggedIdx] = useState(null);
 
   const setF = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
@@ -80,6 +86,26 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
       f.id === fieldId ? { ...f, options: f.options.filter((_, i) => i !== idx) } : f
     ));
 
+  const handleDragStart = (e, idx) => {
+    setDraggedIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e, idx) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, idx) => {
+    e.preventDefault();
+    if (draggedIdx === null || draggedIdx === idx) return;
+    const newFields = [...form.fields];
+    const [draggedField] = newFields.splice(draggedIdx, 1);
+    newFields.splice(idx, 0, draggedField);
+    setF('fields', newFields);
+    setDraggedIdx(null);
+  };
+
   const handleSave = async () => {
     if (!form.title.trim() || !form.slug.trim()) {
       setError('Title and slug are required.');
@@ -91,7 +117,10 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
       const payload = {
         title: form.title.trim(),
         slug: form.slug.trim(),
-        description: form.description.trim(),
+        description: form.description?.trim() || null,
+        success_message: form.success_message?.trim() || null,
+        redirect_url: form.redirect_url?.trim() || null,
+        webhook_url: form.webhook_url?.trim() || null,
         fields: form.fields,
         is_active: form.is_active,
       };
@@ -135,7 +164,23 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
         </div>
         <div className="wf-field-group">
           <label>Description <span className="text-muted" style={{fontWeight:400}}>(shown on public form)</span></label>
-          <input type="text" value={form.description} onChange={e => setF('description', e.target.value)} placeholder="Optional subtitle..." />
+          <input type="text" value={form.description || ''} onChange={e => setF('description', e.target.value)} placeholder="Optional subtitle..." />
+        </div>
+
+        <div className="wf-section-title">Form Settings</div>
+        <div className="wf-field-group" style={{gap: '1rem'}}>
+          <div className="wf-field-group">
+            <label>Success Message <span className="text-muted" style={{fontWeight:400}}>(headline after submit)</span></label>
+            <input type="text" value={form.success_message || ''} onChange={e => setF('success_message', e.target.value)} placeholder="You're In!" />
+          </div>
+          <div className="wf-field-group">
+            <label>Redirect URL <span className="text-muted" style={{fontWeight:400}}>(optional, redirects after 3s)</span></label>
+            <input type="url" value={form.redirect_url || ''} onChange={e => setF('redirect_url', e.target.value)} placeholder="https://..." />
+          </div>
+          <div className="wf-field-group">
+            <label>Webhook URL <span className="text-muted" style={{fontWeight:400}}>(Zapier/Make alert ping, optional)</span></label>
+            <input type="url" value={form.webhook_url || ''} onChange={e => setF('webhook_url', e.target.value)} placeholder="https://hooks.zapier.com/..." />
+          </div>
         </div>
 
         <div className="wf-section-title">Fields</div>
@@ -144,8 +189,16 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
             <p className="text-muted" style={{fontSize:'0.85rem',padding:'0.5rem 0'}}>No fields yet. Add one below.</p>
           )}
           {form.fields.map((field, idx) => (
-            <div key={field.id} className="wf-field-item">
-              <div className="wf-field-header">
+            <div 
+              key={field.id} 
+              className="wf-field-item"
+              draggable
+              onDragStart={(e) => handleDragStart(e, idx)}
+              onDragOver={(e) => handleDragOver(e, idx)}
+              onDrop={(e) => handleDrop(e, idx)}
+              style={{ opacity: draggedIdx === idx ? 0.5 : 1 }}
+            >
+              <div className="wf-field-header" style={{cursor: 'grab'}}>
                 <GripVertical size={14} className="text-muted" />
                 <span className="wf-field-num">#{idx + 1}</span>
                 <select
@@ -356,6 +409,12 @@ export default function Webforms() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  const copyEmbed = (slug) => {
+    const code = `<iframe src="${window.location.origin}/form/${slug}" width="100%" height="800" frameborder="0" style="border:none; border-radius:12px; max-width:600px; margin:0 auto; display:block;"></iframe>`;
+    navigator.clipboard.writeText(code);
+    alert('Embed code copied to clipboard!');
+  };
+
   const panelOpen = view !== null;
 
   return (
@@ -406,6 +465,14 @@ export default function Webforms() {
                             onClick={() => copyLink(f.slug, f.id)}
                           >
                             {copiedId === f.id ? <Check size={15} /> : <Copy size={15} />}
+                          </button>
+                          <button
+                            className="icon-btn"
+                            title="Copy Embed Code"
+                            onClick={() => copyEmbed(f.slug)}
+                            style={{fontWeight: 700, fontSize: '10px'}}
+                          >
+                            &lt;/&gt;
                           </button>
                           <a
                             href={`/form/${f.slug}`}
