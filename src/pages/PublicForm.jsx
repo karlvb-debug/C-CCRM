@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import './PublicForm.css';
 
-const renderRichText = (text) => {
+export const renderRichText = (text) => {
   if (!text) return null;
   // Basic markdown parsing: escape HTML, then parse links, bold, italic, and newlines
   let html = text
@@ -18,7 +18,7 @@ const renderRichText = (text) => {
   return <span dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
-function DynamicField({ field, value, onChange }) {
+export function DynamicField({ field, value, onChange }) {
   const id = field.id;
 
   switch (field.type) {

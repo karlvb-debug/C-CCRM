@@ -5,6 +5,7 @@ import {
   FileText, Plus, X, Trash2, ChevronRight, Copy, Check,
   Eye, ArrowLeft, GripVertical, AlertCircle, ExternalLink
 } from 'lucide-react';
+import { DynamicField } from './PublicForm';
 import './Webforms.css';
 
 // ── Field Types ──────────────────────────────────────────────────────────────
@@ -143,12 +144,13 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
   };
 
   return (
-    <div className="wf-detail-panel glass-panel">
+    <div className="wf-detail-panel glass-panel wide">
       <div className="wf-detail-header">
         <h2>{isNew ? 'New Form' : 'Edit Form'}</h2>
         <button className="detail-close" onClick={onClose}><X size={17} /></button>
       </div>
-      <div className="wf-detail-body">
+      <div className="wf-split-layout">
+      <div className="wf-editor-col">
         {error && <div className="wf-error"><AlertCircle size={14} />{error}</div>}
 
         <div className="wf-field-group">
@@ -272,6 +274,43 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
         <button className="btn-secondary wf-add-field-btn" onClick={addField}>
           <Plus size={15}/> Add Field
         </button>
+      </div>
+
+      <div className="wf-preview-col pf-page">
+        <div className="pf-card" style={{ width: '100%', maxWidth: '100%', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <div className="pf-header" style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.5rem', color: '#3E2723', textAlign: 'center', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>
+              {form.title || 'Form Title'}
+            </h2>
+            {form.description && <p className="pf-subtitle" style={{ textAlign: 'center', color: '#334155', fontSize: '0.9rem' }}>{form.description}</p>}
+          </div>
+          
+          <form className="pf-form" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }} onSubmit={e => e.preventDefault()}>
+            {form.fields.length === 0 ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af', fontSize: '0.9rem', border: '1px dashed #e5e7eb', borderRadius: '12px' }}>
+                Your form fields will appear here...
+              </div>
+            ) : (
+              form.fields.map(field => (
+                <DynamicField key={field.id} field={field} value={''} onChange={() => {}} />
+              ))
+            )}
+            <button 
+              type="button" 
+              className="pf-submit-btn" 
+              style={{
+                width: '100%', padding: '1rem', background: '#3E2723', color: '#fff', 
+                border: 'none', borderRadius: '12px', fontWeight: 600, marginTop: '0.5rem',
+                opacity: 0.8, cursor: 'not-allowed'
+              }}
+              disabled
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+
       </div>
       <div className="wf-detail-footer">
         <button className="btn-primary" onClick={handleSave} disabled={saving}>
