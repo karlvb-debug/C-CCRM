@@ -276,8 +276,8 @@ function FormBuilderPanel({ form: initialForm, onClose, onSaved }) {
         </button>
       </div>
 
-      <div className="wf-preview-col pf-page">
-        <div className="pf-card" style={{ margin: '0 auto', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+      <div className="wf-preview-col" style={{ fontFamily: "'Inter', system-ui, sans-serif", color: 'var(--pf-espresso)' }}>
+        <div className="pf-card" style={{ margin: '0 auto', maxWidth: '520px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
           <div className="pf-header" style={{ marginBottom: '1.5rem' }}>
             <h2 style={{ fontSize: '1.5rem', color: '#3E2723', textAlign: 'center', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>
               {form.title || 'Form Title'}
