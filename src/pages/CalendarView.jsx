@@ -16,10 +16,17 @@ import { useData } from '../context/DataContext';
 import './Calendar.css';
 
 export default function CalendarView() {
-  const { events, addEvent } = useData();
+  const { events, clients, employees, vendors, addEvent } = useData();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ title: '', date: format(new Date(), 'yyyy-MM-dd'), type: 'Party' });
+  const [form, setForm] = useState({ 
+    title: '', 
+    date: format(new Date(), 'yyyy-MM-dd'), 
+    type: 'Party',
+    client_id: '',
+    employee_id: '',
+    vendor_id: ''
+  });
 
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
@@ -30,9 +37,19 @@ export default function CalendarView() {
     addEvent({
       title: form.title,
       date: new Date(form.date).toISOString(),
-      type: form.type
+      type: form.type,
+      client_id: form.client_id || null,
+      employee_id: form.employee_id || null,
+      vendor_id: form.vendor_id || null
     });
-    setForm({ title: '', date: format(new Date(), 'yyyy-MM-dd'), type: 'Party' });
+    setForm({ 
+      title: '', 
+      date: format(new Date(), 'yyyy-MM-dd'), 
+      type: 'Party',
+      client_id: '',
+      employee_id: '',
+      vendor_id: ''
+    });
     setShowAdd(false);
   };
 
@@ -85,11 +102,26 @@ export default function CalendarView() {
           >
             <span className="number">{formattedDate}</span>
             <div className="event-list">
-              {dayEvents.map(evt => (
-                <div key={evt.id} className={`event-badge type-${evt.type.toLowerCase()}`}>
-                  {evt.title}
-                </div>
-              ))}
+              {dayEvents.map(evt => {
+                let entityName = '';
+                if (evt.client_id) {
+                  const c = clients.find(c => String(c.id) === String(evt.client_id));
+                  if (c) entityName = c.name;
+                } else if (evt.employee_id) {
+                  const e = employees.find(e => String(e.id) === String(evt.employee_id));
+                  if (e) entityName = e.name;
+                } else if (evt.vendor_id) {
+                  const v = vendors.find(v => String(v.id) === String(evt.vendor_id));
+                  if (v) entityName = v.name;
+                }
+
+                return (
+                  <div key={evt.id} className={`event-badge type-${evt.type.toLowerCase()}`}>
+                    <strong>{evt.title}</strong>
+                    {entityName && <span className="entity-name"> — {entityName}</span>}
+                  </div>
+                );
+              })}
             </div>
           </div>
         );
@@ -136,13 +168,35 @@ export default function CalendarView() {
             />
             <select 
               value={form.type} 
-              onChange={e => setForm({...form, type: e.target.value})}
+              onChange={e => setForm({...form, type: e.target.value, client_id: '', employee_id: '', vendor_id: ''})}
             >
               <option value="Party">Party</option>
               <option value="Painting">Painting Session</option>
               <option value="Delivery">Vendor Delivery</option>
               <option value="Schedule">Employee Shift</option>
             </select>
+            
+            {(form.type === 'Party' || form.type === 'Painting') && (
+              <select value={form.client_id} onChange={e => setForm({...form, client_id: e.target.value})}>
+                <option value="">-- Select Client --</option>
+                {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            )}
+
+            {form.type === 'Schedule' && (
+              <select value={form.employee_id} onChange={e => setForm({...form, employee_id: e.target.value})}>
+                <option value="">-- Select Employee --</option>
+                {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+              </select>
+            )}
+
+            {form.type === 'Delivery' && (
+              <select value={form.vendor_id} onChange={e => setForm({...form, vendor_id: e.target.value})}>
+                <option value="">-- Select Vendor --</option>
+                {vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+              </select>
+            )}
+
             <button type="submit" className="btn-primary" style={{flex: '0 0 auto'}}>Save Event</button>
           </div>
         </form>

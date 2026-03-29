@@ -5,6 +5,8 @@ import {
   Briefcase, 
   Calendar, 
   FileText,
+  Users,
+  Truck,
   Settings 
 } from 'lucide-react';
 
@@ -14,6 +16,8 @@ const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/clients', icon: Briefcase, label: 'Clients' },
   { path: '/calendar', icon: Calendar, label: 'Calendar' },
+  { path: '/employees', icon: Users, label: 'Employees' },
+  { path: '/vendors', icon: Truck, label: 'Vendors' },
   { path: '/webforms', icon: FileText, label: 'Webforms' },
 ];
 

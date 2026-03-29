@@ -150,3 +150,8 @@
   color: #15803d;
   border: 1px solid #bbf7d0;
 }
+
+.entity-name {
+  font-weight: 400;
+  opacity: 0.85;
+}

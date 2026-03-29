@@ -45,6 +45,8 @@ CREATE TABLE public.events (
     date timestamp with time zone not null,
     type text not null,
     client_id bigint references public.clients(id) on delete cascade,
+    employee_id bigint references public.employees(id) on delete set null,
+    vendor_id bigint references public.vendors(id) on delete set null,
     user_auth_id uuid references auth.users(id) on delete set null
 );
 

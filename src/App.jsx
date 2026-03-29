@@ -10,8 +10,8 @@ import Clients from './pages/Clients';
 import CalendarView from './pages/CalendarView';
 import Webforms from './pages/Webforms';
 import PublicForm from './pages/PublicForm';
-// import Employees from './pages/Employees'; // temporarily hidden
-// import Vendors from './pages/Vendors';     // temporarily hidden
+import Employees from './pages/Employees';
+import Vendors from './pages/Vendors';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -40,8 +40,8 @@ function App() {
         <Route path="/clients" element={<Clients />} />
         <Route path="/calendar" element={<CalendarView />} />
         <Route path="/webforms" element={<Webforms />} />
-        {/* <Route path="/employees" element={<Employees />} /> */}
-        {/* <Route path="/vendors" element={<Vendors />} /> */}
+        <Route path="/employees" element={<Employees />} />
+        <Route path="/vendors" element={<Vendors />} />
       </Route>
     </Routes>
   );
